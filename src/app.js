@@ -13,7 +13,7 @@ prisma.$connect()
 
 const app = express();
 
-const server = new ApolloServer({ schema });
+const server = new ApolloServer({ schema, introspection: true });
 await server.start();
 
 server.applyMiddleware({ app, path: "/graphql" });
