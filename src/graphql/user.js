@@ -23,10 +23,10 @@ const typeDefs = `
     updatedAt: String!
     lastlogin: String
     state: State!
-    linktrees: [Linktree!]!  # <- GraphQL-Feld
+    linktrees: [Linktree!]!  
   }
 
-  ${linktreeModule.typeDefs}  # <- Typen von Linktree wiederverwenden
+  ${linktreeModule.typeDefs}  
 
   type Query {
     users: [User!]!
@@ -44,13 +44,9 @@ const resolvers = {
 
   User: {
     linktrees: async (parent) => {
-      // Alle Linktrees des Users holen
       const linktrees = await prisma.linktree.findMany({ where: { ownerId: parent.id } });
-  
-      // Für jedes Linktree ein "Proxy" Objekt zurückgeben, das die Analytics Resolver nutzt
       return linktrees.map((lt) => ({
         ...lt,
-        // Wir lassen GraphQL den Analytics-Resolver für dieses Objekt aufrufen
       }));
     },
   },
@@ -60,7 +56,7 @@ const resolvers = {
       const clicks = parent.clicks;
   
       const likesCount = await prisma.like.count({ where: { linktreeId: parent.id } });
-      const liked = false; // später dynamisch pro User
+      const liked = false;
       const commentsCount = await prisma.comment.count({ where: { linktreeId: parent.id } });
   
       const relevance = clicks * 0.5 + likesCount * 3 + commentsCount * 5;

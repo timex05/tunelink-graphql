@@ -124,7 +124,7 @@ const resolvers = {
     comments: async (parent) => {
       return prisma.comment.findMany({
         where: { linktreeId: parent.id },
-        orderBy: { createdAt: 'asc' }, // optional sortieren
+        orderBy: { createdAt: 'asc' },
       });
     },
   },
